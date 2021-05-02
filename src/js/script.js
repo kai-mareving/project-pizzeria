@@ -68,12 +68,16 @@
       const thisProduct = this;
 
       //* generate the HTML based on template
-
+      const generatedHTML = templates.menuProduct(thisProduct.data);
+      ////console.log('generatedHTML: ', generatedHTML);
       //* create a DOMelement using utils.createElementFromHTML
-
+      thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+      ////console.log(thisProduct.element);
       //* find the menu container
-
+      const menuContainer = document.querySelector(select.containerOf.menu);
+      ////console.log(menuContainer);
       //* insert the created DOMelement into menu container
+      menuContainer.appendChild(thisProduct.element);
     }
   }
 
