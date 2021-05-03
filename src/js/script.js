@@ -18,6 +18,7 @@
     },
     menuProduct: {
       clickable: '.product__header',
+      title: '.product_name .no-spacing',
       form: '.product__order',
       priceElem: '.product__total-price .price',
       imageWrapper: '.product__images',
@@ -103,13 +104,13 @@
 
         for (let activeProduct of activeProducts) {
           if (activeProduct !== thisProduct.element) {
-            console.log('deactivated::', activeProduct);
+            console.log('deactivated::', activeProduct.childNodes[3].innerText);
             activeProduct.classList.remove(activated);
           }
         }
         //* toggle active class on thisProduct.element
         thisProduct.element.classList.toggle(activated);
-        ////console.log('active::', thisProduct.element);
+        console.log('active::', thisProduct.data.name);
       });
     }
   }
