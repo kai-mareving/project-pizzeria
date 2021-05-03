@@ -18,7 +18,6 @@
     },
     menuProduct: {
       clickable: '.product__header',
-      title: '.product_name .no-spacing',
       form: '.product__order',
       priceElem: '.product__total-price .price',
       imageWrapper: '.product__images',
