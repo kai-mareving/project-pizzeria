@@ -60,6 +60,7 @@
       thisProduct.data = data;
 
       thisProduct.renderInMenu();
+      thisProduct.initAccordion();
 
       console.log('new Product:', thisProduct);
     }
@@ -79,23 +80,52 @@
       //* insert the created DOMelement into menu container
       menuContainer.appendChild(thisProduct.element);
     }
+
+    initAccordion() {
+      const thisProduct = this;
+      ////console.log('initAccordion:', thisProduct);
+      //* find the clickable trigger (the element that should react to clicking)
+      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      console.log('clickableTrigger:', clickableTrigger);
+
+      //* START: add event listener to clickable trigger on event click
+      clickableTrigger.addEventListener('click', function(event) {
+        //* prevent default action for event
+        event.preventDefault();
+        ////console.log('initAccordion event listener!');
+        //* find active product (product that has active class)
+        //* select.all.menuProductsActive: '#product-list > .product.active'
+        const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
+        ////console.log('activeProducts:', activeProducts);
+
+        //* if there is active product and it's not thisProduct.element, remove class active from it
+        const activated = classNames.menuProduct.wrapperActive;
+
+        for (let activeProduct of activeProducts) {
+          if (activeProduct !== thisProduct.element) {
+            console.log('deactivated::', activeProduct);
+            activeProduct.classList.remove(activated);
+          }
+        }
+        //* toggle active class on thisProduct.element
+        thisProduct.element.classList.toggle(activated);
+        ////console.log('active::', thisProduct.element);
+      });
+    }
   }
 
   const app = {
     initMenu: function () {
       const thisApp = this;
       console.log('thisApp.data:', thisApp.data);
-      ////const testProduct = new Product();
+
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
-
-      //// console.log('testProduct:', testProduct);
     },
 
     initData: function(){
       const thisApp = this;
-
       thisApp.data = dataSource;
     },
 
