@@ -76,7 +76,6 @@
       thisProduct.formInputs = thisProduct.element.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      ////console.log('getElements: ', thisProduct.priceElem);
     }
 
     renderInMenu() {
@@ -98,10 +97,10 @@
     initAccordion() {
       const thisProduct = this;
       //* find the clickable trigger (element that should react to clicking)
-      //or:const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      //OR const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
 
       //* START: add event listener to clickable trigger on event click
-      //or:clickableTrigger.addEventListener('click', function(event) {
+      //OR clickableTrigger.addEventListener('click', function(event) {
       thisProduct.accordionTrigger.addEventListener('click', function(event) {
         //* prevent default action for event
         event.preventDefault();
@@ -143,12 +142,37 @@
         event.preventDefault();
         thisProduct.processOrder();
       });
-
     }
 
     processOrder() {
       const thisProduct = this;
-      console.log('processOrder!');
+      //^ convert form to object structure e.g. {sauce:['tomato'],toppings:['olives','redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      console.log('formData: ', formData);
+
+      //* set price to default price
+      let price = thisProduct.data.price;
+
+      //? LOOP: for every category(param)
+      for (let paramId in thisProduct.data.params) {
+        //^ determine param value, e.g. paramId='toppings',param={label:'Toppings',type:'checkboxes'...
+        const param = thisProduct.data.params[paramId];
+        console.log('paramId:', paramId, ' / param:', param);
+
+        //? LOOP: for every option in this category
+        for (let optionId in param.options) {
+          //^ determine option value, e.g. optionId='olives',option={ label:'Olives',price:2,default:true }
+          const option = param.options[optionId];
+          console.log('optionId:', optionId, ' / option:', option);
+
+          //TODO check if the given option (optionId) of the given category (paramId) is selected in the form (formData)
+
+          //TODO check if price needs to be ++ or --
+          //If option selected+default || not selected+not default = dont change [price]
+        }
+      }
+      //TODO update calculated price in the HTML
+      thisProduct.priceElem.innerHTML = price;
     }
 
   }
