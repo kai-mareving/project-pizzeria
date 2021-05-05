@@ -164,14 +164,21 @@
           //^ determine option value, e.g. optionId='olives',option={ label:'Olives',price:2,default:true }
           const option = param.options[optionId];
           console.log('optionId:', optionId, ' / option:', option);
-
-          //TODO check if the given option (optionId) of the given category (paramId) is selected in the form (formData)
-
-          //TODO check if price needs to be ++ or --
-          //If option selected+default || not selected+not default = dont change [price]
+          //* check if the option (optionId) of category (paramId) is selected in the form (formData)
+          if (formData[paramId] && formData[paramId].includes(optionId)) {
+            //TODO check is not default
+            /* if (????) {
+              //TODO add option price to price variable
+            } else {
+              //TODO check is default
+              if (????) {
+                //TODO reduce price var
+              }
+            } */
+          }
         }
       }
-      //TODO update calculated price in the HTML
+      //* update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
     }
 
