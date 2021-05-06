@@ -63,7 +63,7 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
-      thisProduct.processOrder();
+      //thisProduct.processOrder();
 
       //>console.log('new Product:', thisProduct);
     }
@@ -153,28 +153,35 @@
       //* set price to default price
       let price = thisProduct.data.price;
 
-      //? LOOP: for every category(param)
+      //# LOOP: for every category(param)
       for (let paramId in thisProduct.data.params) {
         //^ determine param value, e.g. paramId='toppings',param={label:'Toppings',type:'checkboxes'...
         const param = thisProduct.data.params[paramId];
         console.log('paramId:', paramId, ' / param:', param);
 
-        //? LOOP: for every option in this category
+        //# LOOP: for every option in this category
         for (let optionId in param.options) {
           //^ determine option value, e.g. optionId='olives',option={ label:'Olives',price:2,default:true }
           const option = param.options[optionId];
           console.log('optionId:', optionId, ' / option:', option);
+
           //* check if the option (optionId) of category (paramId) is selected in the form (formData)
           if (formData[paramId] && formData[paramId].includes(optionId)) {
-            //TODO check is not default
-            /* if (????) {
-              //TODO add option price to price variable
+            const isDefault = option.hasOwnProperty('default');
+            //^ check is not default
+            if (!isDefault) {
+              console.log('NOT default!');
+              //* add option price to price variable
+              price += option.price;
             } else {
-              //TODO check is default
-              if (????) {
-                //TODO reduce price var
+              //^ check is default
+              if (isDefault) {
+                console.log('IS default!');
+                //* reduce price var
+                price -= option.price;
               }
-            } */
+            }
+            console.log('let price:', price);
           }
         }
       }
