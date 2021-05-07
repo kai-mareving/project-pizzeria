@@ -72,6 +72,7 @@
       const thisProduct = this;
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       thisProduct.formInputs = thisProduct.element.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
@@ -116,13 +117,13 @@
 
         for (let activeProduct of activeProducts) {
           if (activeProduct !== thisProduct.element) {
-            //> console.log('deactivated::', activeProduct.childNodes[3].innerText);
+            //// console.log('deactivated::', activeProduct.childNodes[3].innerText);
             activeProduct.classList.remove(activated);
           }
         }
         //* toggle active class on thisProduct.element
         thisProduct.element.classList.toggle(activated);
-        //> console.log('active::', thisProduct.data.name);
+        //// console.log('active::', thisProduct.data.name);
       });
     }
 
@@ -171,13 +172,13 @@
       for (let paramId in thisProduct.data.params) {
         //^ determine param value, e.g. paramId='toppings',param={label:'Toppings',type:'checkboxes'...
         const param = thisProduct.data.params[paramId];
-        //>console.log(paramId, param);
+        console.log(paramId, param);
 
         //# LOOP: for every option in this category
         for (let optionId in param.options) {
           //^ determine option value, e.g. optionId='olives',option={ label:'Olives',price:2,default:true }
           const option = param.options[optionId];
-          //>console.log(optionId, option);
+          console.log(optionId, option);
           const isDefault = option.hasOwnProperty('default');
 
           //* check if the option (optionId) of category (paramId) is selected in the form (formData)
@@ -194,6 +195,12 @@
               price -= option.price;
             }
           }
+          const actived = classNames.menuProduct.wrapperActive;
+
+          console.log('image:', thisProduct.imageWrapper.querySelectorAll('img'));
+          //todo find img where class="paramId-optionId"
+          //thisProduct.imageWrapper.querySelector('')
+          //todo toggle 'active' in that img class
         }
       }
 
