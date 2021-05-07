@@ -63,19 +63,21 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
-      //thisProduct.processOrder();
+      //!thisProduct.processOrder();
 
       //>console.log('new Product:', thisProduct);
     }
 
     getElements() {
       const thisProduct = this;
-
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
       thisProduct.formInputs = thisProduct.element.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.inputAmount = thisProduct.element.querySelector(select.widgets.amount.input);
+      thisProduct.amountDecrease = thisProduct.element.querySelector(select.widgets.amount.linkDecrease);
+      thisProduct.amountIncrease = thisProduct.element.querySelector(select.widgets.amount.linkIncrease);
     }
 
     renderInMenu() {
@@ -138,6 +140,18 @@
         });
       }
 
+      thisProduct.amountDecrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisProduct.inputAmount.value --;
+        thisProduct.processOrder();
+      });
+
+      thisProduct.amountIncrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisProduct.inputAmount.value ++;
+        thisProduct.processOrder();
+      });
+
       thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
@@ -182,10 +196,10 @@
           }
         }
       }
-      const quantityInput = formData.amount;
-      //>console.log('quantityInput:', quantityInput);
+
+      console.log('quantity:', thisProduct.inputAmount.value);
       //* update calculated price in the HTML
-      thisProduct.priceElem.innerHTML = price * quantityInput;
+      thisProduct.priceElem.innerHTML = price * thisProduct.inputAmount.value;
     }
   }
 
