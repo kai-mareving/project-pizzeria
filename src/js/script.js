@@ -148,7 +148,7 @@
       const thisProduct = this;
       //^ convert form to object structure e.g. {sauce:['tomato'],toppings:['olives','redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('formData: ', formData);
+      //>console.log('formData: ', formData);
 
       //* set price to default price
       let price = thisProduct.data.price;
@@ -157,36 +157,35 @@
       for (let paramId in thisProduct.data.params) {
         //^ determine param value, e.g. paramId='toppings',param={label:'Toppings',type:'checkboxes'...
         const param = thisProduct.data.params[paramId];
-        console.log(paramId, param);
+        //>console.log(paramId, param);
 
         //# LOOP: for every option in this category
         for (let optionId in param.options) {
           //^ determine option value, e.g. optionId='olives',option={ label:'Olives',price:2,default:true }
           const option = param.options[optionId];
-          console.log('optionId:', optionId, ' / option:', option);
+          //>console.log(optionId, option);
           const isDefault = option.hasOwnProperty('default');
 
           //* check if the option (optionId) of category (paramId) is selected in the form (formData)
           if (formData[paramId] && formData[paramId].includes(optionId)) {
             //^ check is not default
             if (!isDefault) {
-              ////console.log('NOT default!');
               //* add option price to price variable
               price += option.price;
             }
           } else {
             //^ check is default
             if (isDefault) {
-              ////console.log('IS default!');
               //* reduce price var
               price -= option.price;
             }
           }
-          //>console.log('let price:', price);
         }
       }
+      const quantityInput = formData.amount;
+      //>console.log('quantityInput:', quantityInput);
       //* update calculated price in the HTML
-      thisProduct.priceElem.innerHTML = price;
+      thisProduct.priceElem.innerHTML = price * quantityInput;
     }
   }
 
