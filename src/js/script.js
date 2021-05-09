@@ -52,6 +52,7 @@
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
 
+  //##### PRODUCT #####
   class Product{
     constructor(id, data){
       const thisProduct = this;
@@ -65,14 +66,14 @@
       thisProduct.initOrderForm();
       thisProduct.processOrder();
 
-      //>console.log('new Product:', thisProduct);
+      console.log('new Product:', thisProduct);
     }
 
     getElements() {
       const thisProduct = this;
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
-      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper); //'.product__images'
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       thisProduct.formInputs = thisProduct.element.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
@@ -86,13 +87,10 @@
 
       //* generate the HTML based on template
       const generatedHTML = templates.menuProduct(thisProduct.data);
-      ////console.log('generatedHTML: ', generatedHTML);
       //* create a DOMelement using utils.createElementFromHTML
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
-      ////console.log(thisProduct.element);
       //* find the menu container
       const menuContainer = document.querySelector(select.containerOf.menu);
-      ////console.log(menuContainer);
       //* insert the created DOMelement into menu container
       menuContainer.appendChild(thisProduct.element);
     }
@@ -117,13 +115,11 @@
 
         for (let activeProduct of activeProducts) {
           if (activeProduct !== thisProduct.element) {
-            //// console.log('deactivated::', activeProduct.childNodes[3].innerText);
             activeProduct.classList.remove(activated);
           }
         }
         //* toggle active class on thisProduct.element
         thisProduct.element.classList.toggle(activated);
-        //// console.log('active::', thisProduct.data.name);
       });
     }
 
@@ -213,17 +209,26 @@
         }
       }
 
-      ////console.log('quantity:', thisProduct.inputAmount.value);
       //* update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price * thisProduct.inputAmount.value;
     }
   }
 
+  //##### AMOUNT WIDGET #####
+  class AmountWidget{
+    constructor(element) {
+      const thisWidget = this;
+
+      console.log('AmountWidget:', thisWidget);
+      console.log('constructor arguments:', element);
+    }
+  }
+
+  //! ***** APP *****
   const app = {
     initMenu: function () {
       const thisApp = this;
       ////console.log('thisApp.data:', thisApp.data);
-
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
