@@ -143,13 +143,13 @@
 
       thisProduct.amountDecrease.addEventListener('click', function (event) {
         event.preventDefault();
-        thisProduct.inputAmount.value --;
+        thisProduct.inputAmount.value--;
         thisProduct.processOrder();
       });
 
       thisProduct.amountIncrease.addEventListener('click', function (event) {
         event.preventDefault();
-        thisProduct.inputAmount.value ++;
+        thisProduct.inputAmount.value++;
         thisProduct.processOrder();
       });
 
