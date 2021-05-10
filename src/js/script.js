@@ -79,9 +79,9 @@
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
-      thisProduct.inputAmount = thisProduct.element.querySelector(select.widgets.amount.input);
-      thisProduct.amountDecrease = thisProduct.element.querySelector(select.widgets.amount.linkDecrease);
-      thisProduct.amountIncrease = thisProduct.element.querySelector(select.widgets.amount.linkIncrease);
+      //thisProduct.inputAmount = thisProduct.element.querySelector(select.widgets.amount.input);
+      //thisProduct.amountDecrease = thisProduct.element.querySelector(select.widgets.amount.linkDecrease);
+      //thisProduct.amountIncrease = thisProduct.element.querySelector(select.widgets.amount.linkIncrease);
     }
 
     renderInMenu() {
@@ -140,7 +140,8 @@
         });
       }
 
-      thisProduct.amountDecrease.addEventListener('click', function (event) {
+      //?????
+      /* thisProduct.amountDecrease.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.inputAmount.value--;
         thisProduct.processOrder();
@@ -150,7 +151,8 @@
         event.preventDefault();
         thisProduct.inputAmount.value++;
         thisProduct.processOrder();
-      });
+      }); */
+      //?????
 
       thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
@@ -218,7 +220,7 @@
       }
 
       //* update calculated price in the HTML
-      thisProduct.priceElem.innerHTML = price * thisProduct.inputAmount.value;
+      thisProduct.priceElem.innerHTML = price //? or: * thisProduct.inputAmount.value;
     }
   }
 
@@ -227,8 +229,36 @@
     constructor(element) {
       const thisWidget = this;
 
+      thisWidget.getElements(element); // .widget-amount
+      thisWidget.setValue(thisWidget.input.value);
+
       console.log('AmountWidget:', thisWidget);
       console.log('constructor arguments:', element);
+      //>console.log('thisWidget.value:', thisWidget.value);
+      //>console.log('thisWidget.input.value:', thisWidget.input.value);
+    }
+
+    getElements(element) {
+      const thisWidget = this;
+
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input); //input[name="amount"]
+      thisWidget.amountDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease); //a[href="#less"]
+      thisWidget.amountIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease); //a[href="#more"]
+    }
+
+    setValue(value) {
+      const thisWidget = this;
+
+      const newValue = parseInt(value);
+      //>console.log('newValue:', newValue);
+      //todo Add validation
+      //^ is value given by function different from what is already in thisWidget.value
+      if (thisWidget.value !== newValue) {
+        //>console.log('Value is different');
+        //todo thisWidget.value = newValue;
+        //todo thisWidget.input.value = thisWidget.value;
+      }
     }
   }
 
