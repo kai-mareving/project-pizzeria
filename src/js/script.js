@@ -64,9 +64,10 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
-      console.log('new Product:', thisProduct);
+      ////console.log('new Product:', thisProduct);
     }
 
     getElements() {
@@ -77,6 +78,7 @@
       thisProduct.formInputs = thisProduct.element.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
       thisProduct.inputAmount = thisProduct.element.querySelector(select.widgets.amount.input);
       thisProduct.amountDecrease = thisProduct.element.querySelector(select.widgets.amount.linkDecrease);
       thisProduct.amountIncrease = thisProduct.element.querySelector(select.widgets.amount.linkIncrease);
@@ -154,6 +156,12 @@
         event.preventDefault();
         thisProduct.processOrder();
       });
+    }
+
+    initAmountWidget() {
+      const thisProduct = this;
+
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
     }
 
     processOrder() {
