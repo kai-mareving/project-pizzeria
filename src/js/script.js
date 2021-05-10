@@ -234,8 +234,7 @@
 
       console.log('AmountWidget:', thisWidget);
       console.log('constructor arguments:', element);
-      //>console.log('thisWidget.value:', thisWidget.value);
-      //>console.log('thisWidget.input.value:', thisWidget.input.value);
+      console.log('thisWidget.input.value:', thisWidget.input.value);
     }
 
     getElements(element) {
@@ -251,13 +250,13 @@
       const thisWidget = this;
 
       const newValue = parseInt(value);
-      //>console.log('newValue:', newValue);
-      //todo Add validation
+
+      //? Validation ?//
       //^ is value given by function different from what is already in thisWidget.value
-      if (thisWidget.value !== newValue) {
-        //>console.log('Value is different');
-        //todo thisWidget.value = newValue;
-        //todo thisWidget.input.value = thisWidget.value;
+      if (thisWidget.value !== newValue && !isNaN(newValue)) {
+        console.log('thisWidget.value ', thisWidget.value, '!==', newValue, '&& !isNaN');
+        thisWidget.value = newValue;
+        thisWidget.input.value = thisWidget.value;
       }
     }
   }
