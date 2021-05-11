@@ -236,17 +236,14 @@
       const thisWidget = this;
 
       const newValue = parseInt(value);
-      // console.log('newValue: ', newValue);
-      //? Validation ?//
+
+      //** Validation **
       //^ is value given by function different from what is already in thisWidget.value
       if (thisWidget.value !== newValue && !isNaN(newValue)) {
-        // console.log('thisWidget.value: ', thisWidget.value);
-        // console.log('thisWidget.input.value:', thisWidget.input.value);
         thisWidget.value = newValue;
-        thisWidget.input.value = thisWidget.value;
-      } else { //if (isNaN(newValue))
-        thisWidget.input.value = thisWidget.value;
       }
+
+      thisWidget.input.value = thisWidget.value;
     }
 
     initActions() {
