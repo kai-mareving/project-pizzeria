@@ -218,18 +218,20 @@
       thisWidget.initActions();
       thisWidget.setValue(thisWidget.input.value);
 
-      console.log('AmountWidget:', thisWidget);
-      //console.log('constructor arguments:', element);
-      //console.log('thisWidget.input.value:', thisWidget.input.value);
+      //// console.log('AmountWidget:', thisWidget);
+      //// console.log('constructor arguments:', element);
     }
 
     getElements(element) {
       const thisWidget = this;
 
-      thisWidget.element = element; // .widget-amount
-      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input); //input[name="amount"]
-      thisWidget.amountDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease); //a[href="#less"]
-      thisWidget.amountIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease); //a[href="#more"]
+      thisWidget.element = element; //? .widget-amount
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input); //? input[name="amount"]
+      thisWidget.amountDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease); //? a[href="#less"]
+      thisWidget.amountIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease); //? a[href="#more"]
+
+      thisWidget.amountDefaultMin = settings.amountWidget.defaultMin; //? 1
+      thisWidget.amountDefaulMax = settings.amountWidget.defaultMax; //? 9
     }
 
     setValue(value) {
@@ -240,9 +242,17 @@
       //** Validation **
       //^ is value given by function different from what is already in thisWidget.value
       if (thisWidget.value !== newValue && !isNaN(newValue)) {
-        thisWidget.value = newValue;
-      }
 
+        thisWidget.value = newValue;
+
+        if (thisWidget.value > thisWidget.amountDefaulMax) {
+          thisWidget.value = thisWidget.amountDefaulMax;
+          // thisWidget.announce();
+        } else if (thisWidget.value < thisWidget.amountDefaultMin) {
+          thisWidget.value = thisWidget.amountDefaultMin;
+          // thisWidget.announce();
+        }
+      }
       thisWidget.input.value = thisWidget.value;
     }
 
@@ -251,21 +261,32 @@
 
       thisWidget.input.addEventListener('change', function () {
         thisWidget.setValue(thisWidget.input.value);
+        thisWidget.announce();
       });
 
       thisWidget.amountDecrease.addEventListener('click', function (event) {
         event.preventDefault();
-        thisWidget.setValue(thisWidget.value-1);
+        thisWidget.setValue(thisWidget.value - 1);
+        thisWidget.announce();
         //// thisProduct.inputAmount.value--;
         //// thisProduct.processOrder();
       });
 
       thisWidget.amountIncrease.addEventListener('click', function (event) {
         event.preventDefault();
-        thisWidget.setValue(thisWidget.value+1);
+        thisWidget.setValue(thisWidget.value + 1);
+        thisWidget.announce();
         //// thisProduct.inputAmount.value++;
         //// thisProduct.processOrder();
       });
+    }
+
+    announce() {
+      const thisWidget = this;
+
+      const event = new Event('update');
+      thisWidget.element.dispatchEvent(event);
+      console.log('Event "update" dispatched!');
     }
   }
 
