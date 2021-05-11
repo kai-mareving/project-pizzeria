@@ -79,9 +79,9 @@
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
-      //thisProduct.inputAmount = thisProduct.element.querySelector(select.widgets.amount.input);
-      //thisProduct.amountDecrease = thisProduct.element.querySelector(select.widgets.amount.linkDecrease);
-      //thisProduct.amountIncrease = thisProduct.element.querySelector(select.widgets.amount.linkIncrease);
+      //or thisProduct.inputAmount = thisProduct.element.querySelector(select.widgets.amount.input);
+      //or thisProduct.amountDecrease = thisProduct.element.querySelector(select.widgets.amount.linkDecrease);
+      //or thisProduct.amountIncrease = thisProduct.element.querySelector(select.widgets.amount.linkIncrease);
     }
 
     renderInMenu() {
@@ -130,7 +130,6 @@
 
       thisProduct.form.addEventListener('submit', function (event) {
         event.preventDefault();
-        console.log('submit!');
         thisProduct.processOrder();
       });
 
@@ -139,20 +138,6 @@
           thisProduct.processOrder();
         });
       }
-
-      //?????
-      /* thisProduct.amountDecrease.addEventListener('click', function (event) {
-        event.preventDefault();
-        thisProduct.inputAmount.value--;
-        thisProduct.processOrder();
-      });
-
-      thisProduct.amountIncrease.addEventListener('click', function (event) {
-        event.preventDefault();
-        thisProduct.inputAmount.value++;
-        thisProduct.processOrder();
-      }); */
-      //?????
 
       thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
@@ -220,7 +205,7 @@
       }
 
       //* update calculated price in the HTML
-      thisProduct.priceElem.innerHTML = price //? or: * thisProduct.inputAmount.value;
+      thisProduct.priceElem.innerHTML = price; //? or: * thisProduct.inputAmount.value;
     }
   }
 
@@ -230,17 +215,18 @@
       const thisWidget = this;
 
       thisWidget.getElements(element); // .widget-amount
+      thisWidget.initActions();
       thisWidget.setValue(thisWidget.input.value);
 
       console.log('AmountWidget:', thisWidget);
-      console.log('constructor arguments:', element);
-      console.log('thisWidget.input.value:', thisWidget.input.value);
+      //console.log('constructor arguments:', element);
+      //console.log('thisWidget.input.value:', thisWidget.input.value);
     }
 
     getElements(element) {
       const thisWidget = this;
 
-      thisWidget.element = element;
+      thisWidget.element = element; // .widget-amount
       thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input); //input[name="amount"]
       thisWidget.amountDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease); //a[href="#less"]
       thisWidget.amountIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease); //a[href="#more"]
@@ -250,14 +236,39 @@
       const thisWidget = this;
 
       const newValue = parseInt(value);
-
+      // console.log('newValue: ', newValue);
       //? Validation ?//
       //^ is value given by function different from what is already in thisWidget.value
       if (thisWidget.value !== newValue && !isNaN(newValue)) {
-        console.log('thisWidget.value ', thisWidget.value, '!==', newValue, '&& !isNaN');
+        // console.log('thisWidget.value: ', thisWidget.value);
+        // console.log('thisWidget.input.value:', thisWidget.input.value);
         thisWidget.value = newValue;
         thisWidget.input.value = thisWidget.value;
+      } else { //if (isNaN(newValue))
+        thisWidget.input.value = thisWidget.value;
       }
+    }
+
+    initActions() {
+      const thisWidget = this;
+
+      thisWidget.input.addEventListener('change', function () {
+        thisWidget.setValue(thisWidget.input.value);
+      });
+
+      thisWidget.amountDecrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value-1);
+        //// thisProduct.inputAmount.value--;
+        //// thisProduct.processOrder();
+      });
+
+      thisWidget.amountIncrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value+1);
+        //// thisProduct.inputAmount.value++;
+        //// thisProduct.processOrder();
+      });
     }
   }
 
