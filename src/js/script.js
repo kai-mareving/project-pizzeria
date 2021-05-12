@@ -93,7 +93,7 @@
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
-      ////console.log('new Product:', thisProduct);
+      //>console.log('new Product(data):', thisProduct.data);
     }
 
     getElements() {
@@ -167,6 +167,7 @@
       thisProduct.dom.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -231,7 +232,8 @@
           }
         }
       }
-
+      //* add prop priceSingle to thisProduct
+      thisProduct.priceSingle = price;
       //* update calculated price in the HTML
       thisProduct.dom.priceElem.innerHTML = price * thisProduct.amountWidget.value;
     }
@@ -239,7 +241,21 @@
     addToCart() {
       const thisProduct = this;
 
-      app.cart.add(thisProduct);
+      app.cart.add(thisProduct.prepareCartProduct());
+    }
+
+    prepareCartProduct() {
+      const thisProduct = this;
+
+      const productSummary = {
+        id: thisProduct.id,
+        name: thisProduct.data.name,
+        amount: thisProduct.amountWidget.value,
+        priceSingle: thisProduct.priceSingle,
+        price: thisProduct.priceSingle * thisProduct.amountWidget.value,
+        params: {},
+      };
+      return productSummary;
     }
   }
 
@@ -321,7 +337,6 @@
 
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
-
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
     }
 
