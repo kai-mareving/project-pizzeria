@@ -93,7 +93,7 @@
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
-      //>console.log('new Product(data):', thisProduct.data);
+      //& console.log('new Product(data):', thisProduct.data);
     }
 
     getElements() {
@@ -184,22 +184,18 @@
       const thisProduct = this;
       //* convert form to object structure e.g. {sauce:['tomato'],toppings:['olives','redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.dom.form);
-      //>console.log('formData: ', formData);
 
-      //* set price to default price
-      let price = thisProduct.data.price;
+      let price = thisProduct.data.price; //* set price to default price
 
-      //# LOOP: for every category(param)
+      //> LOOP: for every category(param)
       for (let paramId in thisProduct.data.params) {
         //* determine param value, e.g. paramId='toppings',param={label:'Toppings',type:'checkboxes'...
         const param = thisProduct.data.params[paramId];
-        //>console.log(paramId, param);
 
-        //# LOOP: for every option in this category
+        //> LOOP: for every option in this category
         for (let optionId in param.options) {
           //* determine option value, e.g. optionId='olives',option={ label:'Olives',price:2,default:true }
           const option = param.options[optionId];
-          //>console.log(optionId, option);
           const isDefault = option.hasOwnProperty('default');
 
           //* find img in imageWrapper where class .paramId-optionId
@@ -207,24 +203,20 @@
 
           //* check if the option (optionId) of category (paramId) is selected in the form (formData)
           if (formData[paramId] && formData[paramId].includes(optionId)) {
-            //^ check is not default
             if (!isDefault) {
               //^ add option price to price variable
               price += option.price;
             }
             //* check if img with class .paramId-optionId was found (not every product has pictures for options)
             if (optionImg) {
-              //^ add 'active' to that img class
               optionImg.classList.add(classNames.menuProduct.imageVisible);
             }
 
           } else {
 
             if (optionImg) {
-              //^ remove 'active' to that img class
               optionImg.classList.remove(classNames.menuProduct.imageVisible);
             }
-            //^ check is default
             if (isDefault) {
               //^ reduce price var
               price -= option.price;
@@ -232,15 +224,12 @@
           }
         }
       }
-      //* add prop priceSingle to thisProduct
-      thisProduct.priceSingle = price;
-      //* update calculated price in the HTML
-      thisProduct.dom.priceElem.innerHTML = price * thisProduct.amountWidget.value;
+      thisProduct.priceSingle = price; //* add prop priceSingle to thisProduct
+      thisProduct.dom.priceElem.innerHTML = price * thisProduct.amountWidget.value; //* update calculated price in the HTML
     }
 
     addToCart() {
       const thisProduct = this;
-
       app.cart.add(thisProduct.prepareCartProduct());
     }
 
@@ -253,10 +242,38 @@
         amount: thisProduct.amountWidget.value,
         priceSingle: thisProduct.priceSingle,
         price: thisProduct.priceSingle * thisProduct.amountWidget.value,
-        params: {},
+        params: thisProduct.prepareCartProductParams(),
       };
       return productSummary;
     }
+
+    prepareCartProductParams() {
+      const thisProduct = this;
+
+      const formData = utils.serializeFormToObject(thisProduct.dom.form);
+      const params = {};
+
+      //> LOOP: for every category(param)
+      for (let paramId in thisProduct.data.params) {
+        const param = thisProduct.data.params[paramId];
+
+        params[paramId] = {
+          label: param.label,
+          options: {}, //* options[optionId] = {id, label}
+        };
+
+        //> LOOP: for every option in this category(param)
+        for (let optionId in param.options) {
+          const option = param.options[optionId];
+
+          if (formData[paramId] && formData[paramId].includes(optionId)) {
+            params[paramId].options[optionId] = option.label;
+          }
+        }
+      }
+      return params;
+    }
+
   }
 
   //##### AMOUNT WIDGET #####
@@ -329,7 +346,7 @@
       thisCart.getElements(element);
       thisCart.initActions();
 
-      console.log('new Cart: ', thisCart);
+      // console.log('new Cart: ', thisCart);
     }
 
     getElements(element) {
@@ -338,6 +355,7 @@
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList); // '.cart__order-summary'
     }
 
     initActions() {
@@ -349,8 +367,12 @@
     }
 
     add(menuProduct) {
-      // const thisCart = this;
+      const thisCart = this;
 
+      const generatedHTML = templates.cartProduct(menuProduct); //* generate the HTML based on template
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML); //* create a DOMelement using utils.createElementFromHTML
+
+      thisCart.dom.productList.appendChild(generatedDOM); //* insert the created DOMelement into .cart__order-summary list
       console.log('adding product: ', menuProduct);
     }
   }
@@ -359,7 +381,6 @@
   const app = {
     initMenu: function () {
       const thisApp = this;
-      ////console.log('thisApp.data:', thisApp.data);
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
@@ -381,6 +402,7 @@
       const thisApp = this;
       console.log('*** App starting ***');
       // console.log('thisApp:', thisApp);
+      // console.log('thisApp.data:', thisApp.data);
       // console.log('classNames:', classNames);
       // console.log('settings:', settings);
       // console.log('templates:', templates);
