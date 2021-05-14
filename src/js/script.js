@@ -187,12 +187,12 @@
 
       let price = thisProduct.data.price; //* set price to default price
 
-      //> LOOP: for every category(param)
+      //* LOOP: for every category(param)
       for (let paramId in thisProduct.data.params) {
         //* determine param value, e.g. paramId='toppings',param={label:'Toppings',type:'checkboxes'...
         const param = thisProduct.data.params[paramId];
 
-        //> LOOP: for every option in this category
+        //* LOOP: for every option in this category
         for (let optionId in param.options) {
           //* determine option value, e.g. optionId='olives',option={ label:'Olives',price:2,default:true }
           const option = param.options[optionId];
@@ -253,7 +253,7 @@
       const formData = utils.serializeFormToObject(thisProduct.dom.form);
       const params = {};
 
-      //> LOOP: for every category(param)
+      //* LOOP: for every category(param)
       for (let paramId in thisProduct.data.params) {
         const param = thisProduct.data.params[paramId];
 
@@ -262,7 +262,7 @@
           options: {}, //* options[optionId] = {id, label}
         };
 
-        //> LOOP: for every option in this category(param)
+        //* LOOP: for every option in this category(param)
         for (let optionId in param.options) {
           const option = param.options[optionId];
 
@@ -376,7 +376,7 @@
       thisCart.dom.productList.appendChild(generatedDOM); //* insert the created DOMelement into .cart__order-summary list
 
       thisCart.products.push(new CartProduct(menuProduct,generatedDOM));
-      console.log('thisCart.products: ', thisCart.products);
+      //& console.log('thisCart.products: ', thisCart.products);
     }
   }
 
@@ -393,7 +393,7 @@
       thisCartProduct.params = menuProduct.params;
 
       thisCartProduct.getElements(element);
-      thisCartProduct.initAmountWidget(); //todo Problem with initial amount. Set to defaultValue. Should set to thisCartProduct.amount
+      thisCartProduct.initAmountWidget();
 
       //& console.log('thisCartProduct: ', thisCartProduct);
     }
@@ -417,8 +417,6 @@
         thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amountWidget.value;
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
         thisCartProduct.amount = thisCartProduct.amountWidget.value;
-        console.log('thisCartProduct.price:', thisCartProduct.price);
-        console.log('thisCartProduct.amount:', thisCartProduct.amount);
       });
     }
   }
