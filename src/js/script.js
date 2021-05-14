@@ -282,7 +282,10 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
-      thisWidget.setValue(settings.amountWidget.defaultValue);
+      console.log(thisWidget.input.value);
+      //or thisWidget.valuetoSet =
+      thisWidget.input.value ? thisWidget.setValue(thisWidget.input.value) : thisWidget.setValue(settings.amountWidget.defaultValue);
+      //or thisWidget.setValue(thisWidget.valuetoSet);
       thisWidget.initActions();
       //// console.log('AmountWidget:', thisWidget);
       //// console.log('constructor arguments:', element);
