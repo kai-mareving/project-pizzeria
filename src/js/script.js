@@ -345,8 +345,6 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
-
-      // console.log('new Cart: ', thisCart);
     }
 
     getElements(element) {
@@ -373,7 +371,52 @@
       const generatedDOM = utils.createDOMFromHTML(generatedHTML); //* create a DOMelement using utils.createElementFromHTML
 
       thisCart.dom.productList.appendChild(generatedDOM); //* insert the created DOMelement into .cart__order-summary list
-      console.log('adding product: ', menuProduct);
+
+      thisCart.products.push(new CartProduct(menuProduct,generatedDOM));
+      console.log('thisCart.products: ', thisCart.products);
+    }
+  }
+
+  //##### CART PRODUCT #####
+  class CartProduct{
+    constructor(menuProduct, element) {
+      const thisCartProduct = this;
+
+      thisCartProduct.id = menuProduct.id;
+      thisCartProduct.name = menuProduct.name;
+      thisCartProduct.amount = menuProduct.amount;
+      thisCartProduct.price = menuProduct.price;
+      thisCartProduct.priceSingle = menuProduct.priceSingle;
+      thisCartProduct.params = menuProduct.params;
+
+      thisCartProduct.getElements(element);
+      thisCartProduct.initAmountWidget(); //todo Problem with initial amount. Set to defaultValue. Should set to thisCartProduct.amount
+
+      //& console.log('thisCartProduct: ', thisCartProduct);
+    }
+
+    getElements(element) {
+      const thisCartProduct = this;
+
+      thisCartProduct.dom = {};
+      thisCartProduct.dom.wrapper = element;
+      thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
+      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
+      thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
+      thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+    }
+
+    initAmountWidget() {
+      const thisCartProduct = this;
+
+      thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
+      thisCartProduct.dom.amountWidget.addEventListener('update', function () {
+        thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amountWidget.value;
+        thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
+        console.log('thisCartProduct.price:', thisCartProduct.price);
+        console.log('thisCartProduct.amount:', thisCartProduct.amount);
+      });
     }
   }
 
