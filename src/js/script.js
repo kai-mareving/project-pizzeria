@@ -345,7 +345,7 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
-      thisCart.update();
+      // thisCart.update();
     }
 
     getElements(element) {
@@ -354,7 +354,11 @@
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
-      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList); // '.cart__order-summary'
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
+      thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(select.cart.deliveryFee);
+      thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
+      thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
+      thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
     }
 
     initActions() {
@@ -381,17 +385,23 @@
     update() {
       const thisCart = this;
 
-      const deliveryFee = settings.cart.defaultDeliveryFee;
+      let deliveryFee = parseInt(settings.cart.defaultDeliveryFee);
       thisCart.totalNumber = 0; //* number of products
-      thisCart.subTotalPrice = 0; //* sum of all cart product prices
+      thisCart.subtotalPrice = 0; //* sum of all cart product prices
 
       for (let cartProduct of thisCart.products) {
         thisCart.totalNumber += cartProduct.amount;
-        thisCart.subTotalPrice += cartProduct.price;
+        thisCart.subtotalPrice += cartProduct.price;
       }
-      thisCart.totalPrice = thisCart.subTotalPrice + deliveryFee;
-      console.log('totalNumber:', thisCart.totalNumber, '/subTotalPrice:', thisCart.subTotalPrice);
-      console.log('thisCart.products:',thisCart.products);
+      //* insert data into DOM elements:
+      thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
+      thisCart.totalNumber === 0 ? deliveryFee = 0 : deliveryFee;
+      thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+      thisCart.dom.subtotalPrice.innerHTML = thisCart.subtotalPrice;
+      thisCart.totalPrice = thisCart.subtotalPrice + deliveryFee;
+      for (let price of thisCart.dom.totalPrice) {
+        price.innerHTML = thisCart.totalPrice;
+      }
     }
   }
 
