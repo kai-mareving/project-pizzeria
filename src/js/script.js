@@ -124,22 +124,17 @@
 
     initAccordion() {
       const thisProduct = this;
-      //* find the clickable trigger (element that should react to clicking)
-      //OR const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
 
-      //* START: add event listener to clickable trigger on event click
-      //OR clickableTrigger.addEventListener('click', function(event) {
+      //* find the clickable trigger & add listener on click
       thisProduct.dom.accordionTrigger.addEventListener('click', function(event) {
         //* prevent default action for event
         event.preventDefault();
 
-        //* find active product (product that has active class)
-        //* select.all.menuProductsActive: '#product-list > .product.active'
+        //* find active product: '#product-list > .product.active'
         const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
 
         //* if there is active product and it's not thisProduct.element, remove class active from it
-        const activated = classNames.menuProduct.wrapperActive;
-
+        const activated = classNames.menuProduct.wrapperActive; // class active selector
         for (let activeProduct of activeProducts) {
           if (activeProduct !== thisProduct.element) {
             activeProduct.classList.remove(activated);
@@ -182,9 +177,9 @@
 
     processOrder() {
       const thisProduct = this;
+
       //* convert form to object structure e.g. {sauce:['tomato'],toppings:['olives','redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.dom.form);
-
       let price = thisProduct.data.price; //* set price to default price
 
       //* LOOP: for every category(param)
@@ -204,8 +199,7 @@
           //* check if the option (optionId) of category (paramId) is selected in the form (formData)
           if (formData[paramId] && formData[paramId].includes(optionId)) {
             if (!isDefault) {
-              //^ add option price to price variable
-              price += option.price;
+              price += option.price; //^ add option price to price variable
             }
             //* check if img with class .paramId-optionId was found (not every product has pictures for options)
             if (optionImg) {
@@ -218,14 +212,13 @@
               optionImg.classList.remove(classNames.menuProduct.imageVisible);
             }
             if (isDefault) {
-              //^ reduce price var
-              price -= option.price;
+              price -= option.price; //^ reduce price var
             }
           }
         }
       }
       thisProduct.priceSingle = price; //* add prop priceSingle to thisProduct
-      thisProduct.dom.priceElem.innerHTML = price * thisProduct.amountWidget.value; //* update calculated price in the HTML
+      thisProduct.dom.priceElem.innerHTML = price * thisProduct.amountWidget.value; //* update calculated price in HTML
     }
 
     addToCart() {
@@ -332,7 +325,7 @@
     announce() {
       const thisWidget = this;
 
-      const event = new Event('update');
+      const event = new Event('update'); //* create custom event
       thisWidget.element.dispatchEvent(event);
     }
   }
@@ -386,8 +379,8 @@
       const thisCart = this;
 
       let deliveryFee = parseInt(settings.cart.defaultDeliveryFee);
-      thisCart.totalNumber = 0; //* number of products
-      thisCart.subtotalPrice = 0; //* sum of all cart product prices
+      thisCart.totalNumber = 0; //* summed number of products
+      thisCart.subtotalPrice = 0; //* summed cart product prices
 
       for (let cartProduct of thisCart.products) {
         thisCart.totalNumber += cartProduct.amount;
