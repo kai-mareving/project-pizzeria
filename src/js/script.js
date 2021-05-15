@@ -280,14 +280,12 @@
   class AmountWidget{
     constructor(element) {
       const thisWidget = this;
-
+      //or thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.getElements(element);
-      //or thisWidget.valuetoSet =
+      //or thisWidget.setValue(thisWidget.input.value);
       parseInt(thisWidget.input.value) ? thisWidget.setValue(thisWidget.input.value) : thisWidget.setValue(settings.amountWidget.defaultValue);
-      //or thisWidget.setValue(thisWidget.valuetoSet);
       thisWidget.initActions();
-      //// console.log('AmountWidget:', thisWidget);
-      //// console.log('constructor arguments:', element);
+      ////console.log('AmountWidget:', thisWidget, '. Constructor args:', element);
     }
 
     getElements(element) {
@@ -347,6 +345,7 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
+      thisCart.update();
     }
 
     getElements(element) {
@@ -374,8 +373,25 @@
 
       thisCart.dom.productList.appendChild(generatedDOM); //* insert the created DOMelement into .cart__order-summary list
 
-      thisCart.products.push(new CartProduct(menuProduct,generatedDOM));
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
+      thisCart.update();
       //& console.log('thisCart.products: ', thisCart.products);
+    }
+
+    update() {
+      const thisCart = this;
+
+      const deliveryFee = settings.cart.defaultDeliveryFee;
+      thisCart.totalNumber = 0; //* number of products
+      thisCart.subTotalPrice = 0; //* sum of all cart product prices
+
+      for (let cartProduct of thisCart.products) {
+        thisCart.totalNumber += cartProduct.amount;
+        thisCart.subTotalPrice += cartProduct.price;
+      }
+      thisCart.totalPrice = thisCart.subTotalPrice + deliveryFee;
+      console.log('totalNumber:', thisCart.totalNumber, '/subTotalPrice:', thisCart.subTotalPrice);
+      console.log('thisCart.products:',thisCart.products);
     }
   }
 
@@ -416,6 +432,7 @@
         thisCartProduct.amount = thisCartProduct.amountWidget.value;
         thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amountWidget.value;
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+        app.cart.update();
       });
     }
   }
