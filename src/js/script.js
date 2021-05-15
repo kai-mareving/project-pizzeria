@@ -282,9 +282,8 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
-      console.log(thisWidget.input.value);
       //or thisWidget.valuetoSet =
-      thisWidget.input.value ? thisWidget.setValue(thisWidget.input.value) : thisWidget.setValue(settings.amountWidget.defaultValue);
+      parseInt(thisWidget.input.value) ? thisWidget.setValue(thisWidget.input.value) : thisWidget.setValue(settings.amountWidget.defaultValue);
       //or thisWidget.setValue(thisWidget.valuetoSet);
       thisWidget.initActions();
       //// console.log('AmountWidget:', thisWidget);
@@ -414,9 +413,9 @@
 
       thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
       thisCartProduct.dom.amountWidget.addEventListener('update', function () {
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
         thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amountWidget.value;
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
-        thisCartProduct.amount = thisCartProduct.amountWidget.value;
       });
     }
   }
