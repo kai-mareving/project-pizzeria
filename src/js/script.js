@@ -338,7 +338,6 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
-      // thisCart.update();
     }
 
     getElements(element) {
