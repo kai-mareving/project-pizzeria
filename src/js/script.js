@@ -326,6 +326,7 @@
       const thisWidget = this;
 
       const event = new Event('update'); //* create custom event
+      //or const event = new CustomEvent('update', { bubbles: true });
       thisWidget.element.dispatchEvent(event);
     }
   }
@@ -358,6 +359,11 @@
 
       thisCart.dom.toggleTrigger.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+      });
+      //or thisCart.dom.productList.addEventListener('update', function () { thisCart.update(); });
+
+      thisCart.dom.productList.addEventListener('remove', function () {
+        thisCart.remove(event.detail.cartProduct); //* event call contains a ref to thisCartProduct instance
       });
     }
 
@@ -395,6 +401,18 @@
         price.innerHTML = thisCart.totalPrice;
       }
     }
+
+    remove(cartProduct) {
+      const thisCart = this;
+
+      cartProduct.dom.wrapper.remove(); //* remove product from HTML
+
+      const productIndex = thisCart.products.indexOf(cartProduct);
+      if (productIndex !== -1) {
+        thisCart.products.splice(productIndex, 1); //* remove info about this product from the thisCart.products[]
+        thisCart.update(); //* call update() to recalculate the totals
+      }
+    }
   }
 
   //##### CART PRODUCT #####
@@ -411,6 +429,7 @@
 
       thisCartProduct.getElements(element);
       thisCartProduct.initAmountWidget();
+      thisCartProduct.initActions();
 
       //& console.log('thisCartProduct: ', thisCartProduct);
     }
@@ -432,10 +451,34 @@
       thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
       thisCartProduct.dom.amountWidget.addEventListener('update', function () {
         thisCartProduct.amount = thisCartProduct.amountWidget.value;
-        thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amountWidget.value;
+        thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amount; ////thisCartProduct.amountWidget.value;
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
-        app.cart.update();
+        app.cart.update(); //or Kodilla solution on line 363, 329 - bubbling event
       });
+    }
+
+    initActions() {
+      const thisCartProduct = this;
+
+      thisCartProduct.dom.remove.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisCartProduct.remove();
+      });
+      thisCartProduct.dom.edit.addEventListener('click', function (event) {
+        event.preventDefault();
+      });
+    }
+
+    remove() {
+      const thisCartProduct = this;
+
+      const remove = new CustomEvent('remove', {
+        bubbles: true,
+        detail: {
+          cartProduct: thisCartProduct,
+        },
+      });
+      thisCartProduct.dom.wrapper.dispatchEvent(remove);
     }
   }
 
