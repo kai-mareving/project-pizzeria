@@ -63,6 +63,11 @@
   };
 
   const settings = {
+    db: {
+      url: '//localhost:3131',
+      products: 'products',
+      orders: 'orders',
+    },
     amountWidget: {
       defaultValue: 1,
       defaultMin: 0,
@@ -93,7 +98,7 @@
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
-      //& console.log('new Product(data):', thisProduct.data);
+      console.log('new Product(data):', thisProduct.data);
     }
 
     getElements() {
@@ -493,7 +498,19 @@
 
     initData: function(){
       const thisApp = this;
-      thisApp.data = dataSource;
+      //// thisApp.data = dataSource;
+      thisApp.data = {};
+      const url = settings.db.url + '/' + settings.db.products;
+
+      fetch(url)
+      .then(function(rawResponse){ return rawResponse.json(); })
+      .then(function (parsedResponse) {
+        //* save parsedResponse as thisApp.data.products + execute initMenu()
+        thisApp.data.products = parsedResponse;
+        thisApp.initMenu();
+        });
+
+      console.log('thisApp.data:', JSON.stringify(thisApp.data));
     },
 
     initCart: function () {
@@ -506,7 +523,7 @@
     init: function(){
       const thisApp = this;
       console.log('*** App starting ***');
-      // console.log('thisApp:', thisApp);
+      console.log('thisApp:', thisApp);
       // console.log('thisApp.data:', thisApp.data);
       // console.log('classNames:', classNames);
       // console.log('settings:', settings);
