@@ -357,6 +357,7 @@
       thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
+      thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
     }
 
     initActions() {
@@ -369,6 +370,11 @@
 
       thisCart.dom.productList.addEventListener('remove', function () {
         thisCart.remove(event.detail.cartProduct); //* event call contains a ref to thisCartProduct instance
+      });
+
+      thisCart.dom.form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        thisCart.sendOrder();
       });
     }
 
@@ -417,6 +423,24 @@
         thisCart.products.splice(productIndex, 1); //* remove info about this product from the thisCart.products[]
         thisCart.update(); //* call update() to recalculate the totals
       }
+    }
+
+    sendOrder() {
+      const thisCart = this;
+
+      const url = settings.db.url + '/' + settings.db.orders;
+      const orderSubtotalPrice = parseInt(thisCart.dom.subtotalPrice.innerHTML);
+      const orderDeliveryFee = parseInt(thisCart.dom.deliveryFee.innerHTML);
+      const orderPayload = {
+        address: 'testAddress',
+        phone: '771662554',
+        totalPrice: thisCart.totalPrice,
+        subTotalPrice: orderSubtotalPrice,
+        totalNumber: thisCart.totalNumber,
+        deliveryFee: orderDeliveryFee,
+        products: [],
+      };
+      console.log('orderPayload: ', orderPayload);
     }
   }
 
@@ -500,7 +524,7 @@
         .then(parsedResponse => {
           //* save parsedResponse as thisApp.data.products + execute initMenu()
           thisApp.data.products = parsedResponse;
-          // console.log('thisApp.data in fetch():', thisApp.data); //? object with array
+          console.log('thisApp.data in fetch():', thisApp.data); //? object with array
           //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? json sequence
           thisApp.initMenu();
         });
@@ -527,13 +551,13 @@
       const thisApp = this;
       console.log('*** App starting ***');
       console.log('thisApp in app.init():', thisApp);
-      // console.log('thisApp.data:', thisApp.data);
+      //// console.log('thisApp.data:', thisApp.data);
       //// console.log('classNames:', classNames);
       //// console.log('settings:', settings);
       //// console.log('templates:', templates);
 
       thisApp.initData();
-      // thisApp.initMenu();
+      //// thisApp.initMenu();
       thisApp.initCart();
     },
   };
