@@ -358,6 +358,8 @@
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
       thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+      thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
+      thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
     }
 
     initActions() {
@@ -406,7 +408,9 @@
       thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
       thisCart.totalNumber === 0 ? deliveryFee = 0 : deliveryFee;
       thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+      thisCart.orderDeliveryFee = deliveryFee;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+      thisCart.orderSubtotalPrice = subtotalPrice;
       thisCart.totalPrice = subtotalPrice + deliveryFee;
       for (let price of thisCart.dom.totalPrice) {
         price.innerHTML = thisCart.totalPrice;
@@ -429,15 +433,13 @@
       const thisCart = this;
 
       const url = settings.db.url + '/' + settings.db.orders;
-      const orderSubtotalPrice = parseInt(thisCart.dom.subtotalPrice.innerHTML);
-      const orderDeliveryFee = parseInt(thisCart.dom.deliveryFee.innerHTML);
       const orderPayload = {
-        address: 'testAddress',
-        phone: '771662554',
+        address: thisCart.dom.address.value,
+        phone: thisCart.dom.phone.value,
         totalPrice: thisCart.totalPrice,
-        subTotalPrice: orderSubtotalPrice,
+        subTotalPrice: thisCart.orderSubtotalPrice,
         totalNumber: thisCart.totalNumber,
-        deliveryFee: orderDeliveryFee,
+        deliveryFee: thisCart.orderDeliveryFee,
         products: [],
       };
       console.log('orderPayload: ', orderPayload);
