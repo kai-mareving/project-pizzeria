@@ -98,7 +98,7 @@
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
-      console.log('new Product(data):', thisProduct.data);
+      //& console.log('new Product(data):', thisProduct.data);
     }
 
     getElements() {
@@ -489,28 +489,31 @@
 
   //! ***** APP *****
   const app = {
-    initMenu: function () {
-      const thisApp = this;
-      for (let productData in thisApp.data.products) {
-        new Product(productData, thisApp.data.products[productData]);
-      }
-    },
-
     initData: function(){
       const thisApp = this;
-      //// thisApp.data = dataSource;
+      //or thisApp.data = dataSource;
       thisApp.data = {};
       const url = settings.db.url + '/' + settings.db.products;
 
       fetch(url)
-      .then(function(rawResponse){ return rawResponse.json(); })
-      .then(function (parsedResponse) {
+      .then(rawResponse => rawResponse.json())
+      .then(parsedResponse => {
         //* save parsedResponse as thisApp.data.products + execute initMenu()
         thisApp.data.products = parsedResponse;
+        // console.log('thisApp.data in fetch():', thisApp.data); //? object with array
+        //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? json sequence
         thisApp.initMenu();
-        });
+      });
+      //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? still empty. Why?
+    },
 
-      console.log('thisApp.data:', JSON.stringify(thisApp.data));
+    initMenu: function () {
+      const thisApp = this;
+      for (let productData in thisApp.data.products) {
+        //or new Product(productData, thisApp.data.products[productData]);
+        new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
+        ////console.log('new Product(data):', thisApp.data.products[productData]);
+      }
     },
 
     initCart: function () {
@@ -523,14 +526,14 @@
     init: function(){
       const thisApp = this;
       console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
+      console.log('thisApp in app.init():', thisApp);
       // console.log('thisApp.data:', thisApp.data);
-      // console.log('classNames:', classNames);
-      // console.log('settings:', settings);
-      // console.log('templates:', templates);
+      //// console.log('classNames:', classNames);
+      //// console.log('settings:', settings);
+      //// console.log('templates:', templates);
 
       thisApp.initData();
-      thisApp.initMenu();
+      // thisApp.initMenu();
       thisApp.initCart();
     },
   };
