@@ -526,11 +526,11 @@
         .then(parsedResponse => {
           //* save parsedResponse as thisApp.data.products + execute initMenu()
           thisApp.data.products = parsedResponse;
-          console.log('thisApp.data in fetch():', thisApp.data); //? object with array
-          //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? json sequence
+          //// console.log('fetch() done.thisApp.data{[]} in fetch():', thisApp.data);
+          //// console.log('fetch() done.ThisApp.data(stringified):', JSON.stringify(thisApp.data));
           thisApp.initMenu();
         });
-      //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? still empty. Why?
+      //// console.log('fetch() still working');
     },
 
     initMenu: function () {
