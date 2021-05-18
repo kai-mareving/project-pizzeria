@@ -496,14 +496,14 @@
       const url = settings.db.url + '/' + settings.db.products;
 
       fetch(url)
-      .then(rawResponse => rawResponse.json())
-      .then(parsedResponse => {
-        //* save parsedResponse as thisApp.data.products + execute initMenu()
-        thisApp.data.products = parsedResponse;
-        // console.log('thisApp.data in fetch():', thisApp.data); //? object with array
-        //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? json sequence
-        thisApp.initMenu();
-      });
+        .then(rawResponse => rawResponse.json())
+        .then(parsedResponse => {
+          //* save parsedResponse as thisApp.data.products + execute initMenu()
+          thisApp.data.products = parsedResponse;
+          // console.log('thisApp.data in fetch():', thisApp.data); //? object with array
+          //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? json sequence
+          thisApp.initMenu();
+        });
       //// console.log('thisApp.data in fetch():', JSON.stringify(thisApp.data)); //? still empty. Why?
     },
 
