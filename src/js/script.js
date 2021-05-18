@@ -442,7 +442,20 @@
         deliveryFee: thisCart.orderDeliveryFee,
         products: [],
       };
-      console.log('orderPayload: ', orderPayload);
+
+      for (let prod of thisCart.products) {
+        orderPayload.products.push(prod.getData());
+      }
+      //// console.log('orderPayload: ', orderPayload);
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify(orderPayload)
+      };
+
+      fetch(url, options).then(response => response.json())
+        .then(parsedResponse => console.log('parsedResponse: ', parsedResponse));
+
     }
   }
 
@@ -510,6 +523,20 @@
         },
       });
       thisCartProduct.dom.wrapper.dispatchEvent(remove);
+    }
+
+    getData() {
+      const thisCartProduct = this;
+
+      const orderSummary = {
+        id: thisCartProduct.id,
+        name: thisCartProduct.name,
+        amount: thisCartProduct.amount,
+        price: thisCartProduct.price,
+        priceSingle: thisCartProduct.priceSingle,
+        params: thisCartProduct.params,
+      };
+      return orderSummary;
     }
   }
 
