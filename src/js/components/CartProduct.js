@@ -1,6 +1,7 @@
 import { select } from '../settings.js';
 import AmountWidget from './AmountWidget.js';
 
+
 class CartProduct{
   constructor(menuProduct, element) {
     const thisCartProduct = this;
@@ -36,9 +37,8 @@ class CartProduct{
     thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
     thisCartProduct.dom.amountWidget.addEventListener('update', function () {
       thisCartProduct.amount = thisCartProduct.amountWidget.value;
-      thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amount; ////thisCartProduct.amountWidget.value;
+      thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amount;
       thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
-      app.cart.update(); //or Kodilla solution on line 363, 329 - bubbling event
     });
   }
 

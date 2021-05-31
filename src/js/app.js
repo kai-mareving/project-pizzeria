@@ -5,7 +5,6 @@ import Cart from './components/Cart.js';
 const app = {
   initData: function(){
     const thisApp = this;
-    //or thisApp.data = dataSource;
     thisApp.data = {};
     const url = settings.db.url + '/' + settings.db.products;
 
@@ -14,8 +13,8 @@ const app = {
       .then(parsedResponse => {
         //* save parsedResponse as thisApp.data.products + execute initMenu()
         thisApp.data.products = parsedResponse;
-        //// console.log('fetch() done.thisApp.data{[]} in fetch():', thisApp.data);
-        //// console.log('fetch() done.ThisApp.data(stringified):', JSON.stringify(thisApp.data));
+        //// console.log('fetch() done:', thisApp.data);
+        //// console.log('fetch() done:', JSON.stringify(thisApp.data));
         thisApp.initMenu();
       });
     //// console.log('fetch() still working');
@@ -35,6 +34,12 @@ const app = {
 
     const cartElem = document.querySelector(select.containerOf.cart);
     thisApp.cart = new Cart(cartElem);
+
+    thisApp.productList = document.querySelector(select.containerOf.menu);
+    thisApp.productList.addEventListener('add-to-cart', function (event) {
+      app.cart.add(event.detail.product);
+    });
+    //or cartElem.addEventListener('update',function(event){app.cart.update();}); -> working in Cart.initActions()
   },
 
   init: function(){
@@ -45,12 +50,10 @@ const app = {
     //// console.log('classNames:', classNames);
     //// console.log('settings:', settings);
     //// console.log('templates:', templates);
-
     thisApp.initData();
-    //// thisApp.initMenu();
+    //// thisApp.initMenu(); -> in app.initData
     thisApp.initCart();
   },
 };
 
 app.init();
-
