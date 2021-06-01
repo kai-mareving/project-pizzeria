@@ -64,7 +64,7 @@ export const select = {
     tables: '.floor-plan .table',
   },
   nav: {
-      links: '.main-nav a',
+    links: '.main-nav a',
   },
 };
 
@@ -81,10 +81,10 @@ export const classNames = {
     tableBooked: 'booked',
   },
   nav: {
-      active: 'active',
+    active: 'active',
   },
   pages: {
-      active: 'active',
+    active: 'active',
   },
 };
 
@@ -113,10 +113,10 @@ export const settings = {
     close: 24,
   },
   datePicker: {
-      maxDaysInFuture: 14,
+    maxDaysInFuture: 14,
   },
   booking: {
-      tableIdAttribute: 'data-table',
+    tableIdAttribute: 'data-table',
   },
 };
 
