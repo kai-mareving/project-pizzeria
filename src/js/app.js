@@ -1,23 +1,49 @@
-import {settings, select} from './settings.js';
+import {settings, select, classNames} from './settings.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
 
 const app = {
-  initData: function(){
+  initPages: function () {
     const thisApp = this;
-    thisApp.data = {};
-    const url = settings.db.url + '/' + settings.db.products;
 
-    fetch(url)
-      .then(rawResponse => rawResponse.json())
-      .then(parsedResponse => {
-        //* save parsedResponse as thisApp.data.products + execute initMenu()
-        thisApp.data.products = parsedResponse;
-        //// console.log('fetch() done:', thisApp.data);
-        //// console.log('fetch() done:', JSON.stringify(thisApp.data));
-        thisApp.initMenu();
+    thisApp.pages = document.querySelector(select.containerOf.pages).children;
+    thisApp.navlinks = document.querySelectorAll(select.nav.links);
+    /* activate page [order] */
+    const idFromHash = window.location.hash.replace('#/','');
+    let pageMatchingHash = thisApp.pages[0].id;
+
+    for (let page of thisApp.pages) {
+      if (pageId == idFromHash) { pageMatchingHash = page.id; break; }
+    }
+
+    thisApp.activatePage(idFromHash);
+
+    for (let link of thisApp.navlinks) {
+      link.addEventListener('click', function (event) {
+        const clickedElem = this;
+        event.preventDefault();
+        /* get page id from href attribute */
+        const id = clickedElem.getAttribute('href').replace('#', '');
+        /* run thisApp.activatePage with this id */
+        thisApp.activatePage(id);
+        /* change URL hash */
+        window.location.hash = '#/' + id;
       });
-    //// console.log('fetch() still working');
+    }
+  },
+
+  activatePage: function (pageId) {
+    const thisApp = this;
+
+    /* add class "active" to matching [pages], remove from non-matching */
+    for (let page of thisApp.pages) {
+      // or if (page.id === pageId)
+      page.classList.toggle( classNames.pages.active, page.id == pageId );
+    }
+    /* add class "active" to matching [links], remove from non-matching */
+    for (let link of thisApp.navlinks) {
+      link.classList.toggle( classNames.nav.active, link.getAttribute('href') == '#' + pageId );
+    }
   },
 
   initMenu: function () {
@@ -42,6 +68,23 @@ const app = {
     //or cartElem.addEventListener('update',function(event){app.cart.update();}); -> working in Cart.initActions()
   },
 
+  initData: function(){
+    const thisApp = this;
+    thisApp.data = {};
+    const url = settings.db.url + '/' + settings.db.products;
+
+    fetch(url)
+      .then(rawResponse => rawResponse.json())
+      .then(parsedResponse => {
+        /* save parsedResponse as thisApp.data.products + execute initMenu() */
+        thisApp.data.products = parsedResponse;
+        //// console.log('fetch() done:', thisApp.data);
+        //// console.log('fetch() done:', JSON.stringify(thisApp.data));
+        thisApp.initMenu();
+      });
+    //// console.log('fetch() still working');
+  },
+
   init: function(){
     const thisApp = this;
     console.log('*** App starting ***');
@@ -50,8 +93,9 @@ const app = {
     //// console.log('classNames:', classNames);
     //// console.log('settings:', settings);
     //// console.log('templates:', templates);
+    thisApp.initPages();
     thisApp.initData();
-    //// thisApp.initMenu(); -> in app.initData
+    /* thisApp.initMenu(); -> in app.initData */
     thisApp.initCart();
   },
 };
