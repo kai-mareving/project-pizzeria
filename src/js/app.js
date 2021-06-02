@@ -13,7 +13,7 @@ const app = {
     let pageMatchingHash = thisApp.pages[0].id;
 
     for (let page of thisApp.pages) {
-      if (pageId == idFromHash) { pageMatchingHash = page.id; break; }
+      if (page.id == idFromHash) { pageMatchingHash = page.id; break; }
     }
 
     thisApp.activatePage(idFromHash);
