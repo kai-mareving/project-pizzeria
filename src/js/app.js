@@ -17,7 +17,7 @@ const app = {
       if (page.id == idFromHash) { pageMatchingHash = page.id; break; }
     }
 
-    thisApp.activatePage(idFromHash);
+    thisApp.activatePage(pageMatchingHash);
 
     for (let link of thisApp.navlinks) {
       link.addEventListener('click', function (event) {
