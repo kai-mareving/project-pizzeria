@@ -1,6 +1,7 @@
 import {settings, select, classNames} from './settings.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
+import Booking from './components/Booking.js';
 
 const app = {
   initPages: function () {
@@ -68,6 +69,15 @@ const app = {
     //or cartElem.addEventListener('update',function(event){app.cart.update();}); -> working in Cart.initActions()
   },
 
+  initBooking: function () {
+    const thisApp = this;
+
+    /* find container of booking widget (select.containerOf.booking) */
+    const bookingWrapper = document.querySelector(select.containerOf.booking);
+    /* create new instance of class Booking and pass booking container to it */
+    thisApp.bookingPage = new Booking(bookingWrapper);
+  },
+
   initData: function(){
     const thisApp = this;
     thisApp.data = {};
@@ -97,6 +107,7 @@ const app = {
     thisApp.initData();
     /* thisApp.initMenu(); -> in app.initData */
     thisApp.initCart();
+    thisApp.initBooking();
   },
 };
 
