@@ -5,7 +5,7 @@ import AmountWidget from './AmountWidget.js';
 class Booking {
   constructor(container) {
     const thisBooking = this;
-    console.log('Booking: ', container, '. ', thisBooking);
+    //> console.log('Booking: ', container, '. ', thisBooking);
 
     thisBooking.render(container);
     thisBooking.initWidgets();
@@ -33,11 +33,11 @@ class Booking {
     thisBooking.hoursAmountWidget = new AmountWidget(thisBooking.dom.hoursAmount);
 
     thisBooking.dom.peopleAmount.addEventListener('update', function () {
-      console.log('change on peopleAmount');
+      console.log('update on peopleAmount');
     });
 
     thisBooking.dom.hoursAmount.addEventListener('update', function () {
-      console.log('change on hoursAmount');
+      console.log('update on hoursAmount');
     });
 
   }
