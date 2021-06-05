@@ -1,5 +1,7 @@
 import { settings, select } from '../settings.js';
 import BaseWidget from './BaseWidget.js';
+// import DatePicker from './DatePicker.js';
+// import HourPicker from './HourPicker.js';
 
 class AmountWidget extends BaseWidget {
   constructor(element) {
