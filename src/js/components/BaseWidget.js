@@ -1,5 +1,5 @@
 import { select, classNames, settings } from '../settings.js';
-import utils from '../utils.js';
+// import utils from '../utils.js';
 
 class BaseWidget {
   constructor(wrapperElement, initialValue) {
@@ -10,21 +10,32 @@ class BaseWidget {
     thisWidget.dom.amountDecrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkDecrease);
     thisWidget.dom.amountIncrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkIncrease);
 
-    thisWidget.value = initialValue;
+    thisWidget.correctValue = initialValue;
   }
 
+  get value() {
+    const thisWidget = this;
 
-  setValue(value) {
+    return thisWidget.correctValue;
+  }
+
+  set value(value) {
     const thisWidget = this;
 
     //** Validation **
     const newValue = thisWidget.parseValue(value);
 
-    if ( thisWidget.value !== newValue && thisWidget.isValid(newValue)) {
-      thisWidget.value = newValue;
+    if ( thisWidget.correctValue !== newValue && thisWidget.isValid(newValue)) {
+      thisWidget.correctValue = newValue;
       thisWidget.announce();
     }
     thisWidget.renderValue();
+  }
+
+  setValue(value) {
+    const thisWidget = this;
+
+    thisWidget.value = value;
   }
 
   parseValue(value) {
