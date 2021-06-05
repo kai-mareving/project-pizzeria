@@ -52,7 +52,7 @@ const app = {
     for (let productData in thisApp.data.products) {
       //or new Product(productData, thisApp.data.products[productData]);
       new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
-      ////console.log('new Product(data):', thisApp.data.products[productData]);
+      //& console.log('new Product(data):', thisApp.data.products[productData]);
     }
   },
 

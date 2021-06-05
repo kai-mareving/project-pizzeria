@@ -1,7 +1,5 @@
 import { settings, select } from '../settings.js';
 import BaseWidget from './BaseWidget.js';
-// import DatePicker from './DatePicker.js';
-// import HourPicker from './HourPicker.js';
 
 class AmountWidget extends BaseWidget {
   constructor(element) {
@@ -12,13 +10,12 @@ class AmountWidget extends BaseWidget {
     thisWidget.getElements(element);
     parseInt(thisWidget.dom.input.value) ? thisWidget.setValue(thisWidget.dom.input.value) : thisWidget.setValue(settings.amountWidget.defaultValue);
     thisWidget.initActions();
-    //// console.log('AmountWidget:', thisWidget, '. Constructor args:', element);
+    //> console.log('AmountWidget:', thisWidget, '. Constructor args:', element);
   }
 
   getElements() {
     const thisWidget = this;
 
-    //or thisWidget.element = element;
     thisWidget.dom.input = thisWidget.dom.wrapper.querySelector(select.widgets.amount.input);
     thisWidget.dom.amountDecrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkDecrease);
     thisWidget.dom.amountIncrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkIncrease);
@@ -38,16 +35,14 @@ class AmountWidget extends BaseWidget {
   initActions() {
     const thisWidget = this;
 
+    /* Add event listeners to prepared inputs */
     thisWidget.dom.input.addEventListener('change', function () {
-      //or thisWidget.setValue(thisWidget.dom.input.value);
       thisWidget.value = thisWidget.dom.input.value;
     });
-
     thisWidget.dom.amountDecrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(thisWidget.value - 1);
     });
-
     thisWidget.dom.amountIncrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(thisWidget.value + 1);

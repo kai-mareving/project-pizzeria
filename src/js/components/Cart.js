@@ -37,7 +37,7 @@ class Cart {
     thisCart.dom.productList.addEventListener('update', function () { thisCart.update(); }); //or altern in app.initCart()
 
     thisCart.dom.productList.addEventListener('remove', function () {
-      thisCart.remove(event.detail.cartProduct); //* event call contains a ref to thisCartProduct instance
+      thisCart.remove(event.detail.cartProduct); /* event call contains a ref to thisCartProduct instance */
     });
 
     thisCart.dom.form.addEventListener('submit', function (event) {
@@ -49,28 +49,28 @@ class Cart {
   add(menuProduct) {
     const thisCart = this;
 
-    const generatedHTML = templates.cartProduct(menuProduct); //* generate the HTML based on template
-    const generatedDOM = utils.createDOMFromHTML(generatedHTML); //* create a DOMelement using utils.createElementFromHTML
+    const generatedHTML = templates.cartProduct(menuProduct); /* generate the HTML based on template */
+    const generatedDOM = utils.createDOMFromHTML(generatedHTML); /* create a DOM element using utils.createElementFromHTML */
 
-    thisCart.dom.productList.appendChild(generatedDOM); //* insert the created DOMelement into .cart__order-summary list
+    thisCart.dom.productList.appendChild(generatedDOM); /* insert the created DOM element into .cart__order-summary list */
 
     thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
     thisCart.update();
-    //& console.log('thisCart.products: ', thisCart.products);
+    //> console.log('thisCart.products: ', thisCart.products);
   }
 
   update() {
     const thisCart = this;
 
-    thisCart.totalNumber = 0; //* summed number of products
+    thisCart.totalNumber = 0; /* summed-up number of products */
     let deliveryFee = parseInt(settings.cart.defaultDeliveryFee);
-    let subtotalPrice = 0; //* summed cart product prices
+    let subtotalPrice = 0; /* summed-up cart product prices */
 
     for (let cartProduct of thisCart.products) {
       thisCart.totalNumber += cartProduct.amount;
       subtotalPrice += cartProduct.price;
     }
-    //* insert data into DOM elements:
+    /* insert data into DOM elements */
     thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
     thisCart.totalNumber === 0 ? deliveryFee = 0 : deliveryFee;
     thisCart.dom.deliveryFee.innerHTML = deliveryFee;
@@ -86,12 +86,12 @@ class Cart {
   remove(cartProduct) {
     const thisCart = this;
 
-    cartProduct.dom.wrapper.remove(); //* remove product from HTML
+    cartProduct.dom.wrapper.remove(); /* remove product from HTML */
 
     const productIndex = thisCart.products.indexOf(cartProduct);
     if (productIndex !== -1) {
-      thisCart.products.splice(productIndex, 1); //* remove info about this product from the thisCart.products[]
-      thisCart.update(); //* call update() to recalculate the totals
+      thisCart.products.splice(productIndex, 1); /* remove info about this product from thisCart.products[] */
+      thisCart.update(); //& call update() to recalculate totals
     }
   }
 
