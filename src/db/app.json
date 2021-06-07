@@ -1,5 +1,5 @@
 {
-  "products":[
+  "products": [
      {
         "id":"cake",
         "class":"small",
@@ -202,8 +202,8 @@
         }
      }
   ],
-  "orders":[],
-  "events":[
+  "orders": [],
+  "events": [
     {
       "id": 1,
       "date": "2021-01-01",
@@ -255,5 +255,15 @@
       "starters": ["lemonWater"]
     }
   ],
-  "bookings":[]
+  "bookings": [
+    {
+      "id": 1,
+      "date": "2021-06-10",
+      "hour": "16:00",
+      "table": 1,
+      "duration": 3,
+      "ppl": 4,
+      "starters": ["water"]
+    }
+  ]
 }
