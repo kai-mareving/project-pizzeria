@@ -35,21 +35,39 @@ class Booking {
         startDateParam,
       ],
     };
-    console.log('getData params:', params);
+    // console.log('getData params:', params);
 
     const urls = {
-      booking:       'http:' + settings.db.url + '/' + settings.db.bookings
-                                     + '?' + params.booking.join('&'),
-      eventsCurrent: settings.db.url + '/' + settings.db.events
-                                     + '?' + params.eventsCurrent.join('&'),
-      eventsRepeat:  settings.db.url + '/' + settings.db.events
-                                     + '?' + params.eventsRepeat.join('&'),
+      bookings: 'http:' + settings.db.url + '/' + settings.db.bookings
+        + '?' + params.booking.join('&'),
+      eventsCurrent: 'http:' + settings.db.url + '/' + settings.db.events
+        + '?' + params.eventsCurrent.join('&'),
+      eventsRepeat: 'http:' + settings.db.url + '/' + settings.db.events
+        + '?' + params.eventsRepeat.join('&'),
     };
-    console.log('getData urls:', urls);
+    // console.log('getData urls:', urls);
 
-    fetch(urls.booking)
-      .then(function (bookingsResponse) { return bookingsResponse.json(); })
-      .then(function (bookings) { console.log(bookings); });
+    Promise.all([
+      fetch(urls.bookings),
+      fetch(urls.eventsCurrent),
+      fetch(urls.eventsRepeat),
+    ])
+      .then(function (allResponses) {
+        const bookingsResponse = allResponses[0];
+        const eventsCurrentResponse = allResponses[1];
+        const eventsRepeatResponse = allResponses[2];
+        return Promise.all([
+          bookingsResponse.json(),
+          eventsCurrentResponse.json(),
+          eventsRepeatResponse.json(),
+        ]);
+      })
+      .then(function ([bookings, eventsCurrent, eventsRepeat]) {
+        /* treat arguments received by function as an array of consts */
+        console.log(bookings);
+        console.log(eventsCurrent);
+        console.log(eventsRepeat);
+      });
 
   }
 
