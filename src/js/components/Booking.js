@@ -38,11 +38,11 @@ class Booking {
     // console.log('getData params:', params);
 
     const urls = {
-      bookings: 'http:' + settings.db.url + '/' + settings.db.bookings
+      bookings: settings.db.url + '/' + settings.db.bookings
         + '?' + params.booking.join('&'),
-      eventsCurrent: 'http:' + settings.db.url + '/' + settings.db.events
+      eventsCurrent: settings.db.url + '/' + settings.db.events
         + '?' + params.eventsCurrent.join('&'),
-      eventsRepeat: 'http:' + settings.db.url + '/' + settings.db.events
+      eventsRepeat: settings.db.url + '/' + settings.db.events
         + '?' + params.eventsRepeat.join('&'),
     };
     // console.log('getData urls:', urls);
@@ -64,10 +64,56 @@ class Booking {
       })
       .then(function ([bookings, eventsCurrent, eventsRepeat]) {
         /* treat arguments received by function as an array of consts */
-        console.log(bookings);
-        console.log(eventsCurrent);
-        console.log(eventsRepeat);
+        // console.log(bookings);
+        // console.log(eventsCurrent);
+        // console.log(eventsRepeat);
+        thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
       });
+
+  }
+
+  parseData(bookings, eventsCurrent, eventsRepeat) {
+    const thisBooking = this;
+
+    /* check if there are pending bookings at given time for chosen table */
+    thisBooking.booked = {};
+
+    for (let item of bookings) {
+      thisBooking.makeBooked(item.date, item.hour, item.duration, item.table);
+    }
+    for (let item of eventsCurrent) {
+      thisBooking.makeBooked(item.date, item.hour, item.duration, item.table);
+    }
+
+    const minDate = thisBooking.datePicker.minDate;
+    const maxDate = thisBooking.datePicker.maxDate;
+
+    for (let item of eventsRepeat) {
+      // const startDate = item.date;
+      if (item.repeat == 'daily') {
+        for (let loopDate = minDate; loopDate <= maxDate; loopDate = utils.addDays(loopDate,1)) {
+          thisBooking.makeBooked(utils.dateToStr(loopDate), item.hour, item.duration, item.table);
+        }
+      }
+    }
+    console.log('thisBooking.booked:', thisBooking.booked);
+  }
+
+  makeBooked(date, hour, duration, table) {
+    const thisBooking = this;
+
+    if (typeof thisBooking.booked[date] == 'undefined') {
+      thisBooking.booked[date] = {};
+    }
+
+    const startHour = utils.hourToNumber(hour);
+
+    for (let hourBlock = startHour; hourBlock < startHour + duration; hourBlock+= 0.5){
+      if (typeof thisBooking.booked[date][hourBlock] == 'undefined') {
+        thisBooking.booked[date][hourBlock] = [];
+      }
+      thisBooking.booked[date][hourBlock].push(table);
+    }
 
   }
 

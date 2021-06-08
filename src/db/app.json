@@ -206,26 +206,16 @@
   "events": [
     {
       "id": 1,
-      "date": "2021-06-12",
-      "hour": "12:30",
-      "table": 1,
-      "repeat": false,
-      "duration": 4,
-      "ppl": 3,
-      "starters": []
-    },
-    {
-      "id": 2,
-      "date": "2021-06-19",
+      "date": "2021-06-18",
       "hour": "16:00",
-      "table": 3,
+      "table": 1,
       "repeat": "daily",
       "duration": 2,
       "ppl": 3,
       "starters": ["bread", "lemonWater"]
     },
     {
-      "id": 3,
+      "id": 2,
       "date": "2021-06-21",
       "hour": "12:00",
       "table": 3,
@@ -235,35 +225,34 @@
       "starters": ["bread", "lemonWater"]
     },
     {
-      "id": 4,
-      "date": "2021-06-14",
-      "hour": "13:00",
+      "id": 3,
+      "date": "2021-06-18",
+      "hour": "15:30",
       "table": 2,
-      "repeat": "daily",
-      "duration": 4,
-      "ppl": 3,
-      "starters": []
-    },
-    {
-      "id": 5,
-      "date": "2021-06-09",
-      "hour": "18:00",
-      "table": 2,
-      "repeat": "daily",
-      "duration": 2,
-      "ppl": 3,
-      "starters": ["lemonWater"]
+      "repeat": false,
+      "duration": 1.5,
+      "ppl": 4,
+      "starters": ["bread"]
     }
   ],
   "bookings": [
     {
       "id": 1,
-      "date": "2021-06-10",
-      "hour": "16:00",
+      "date": "2021-06-18",
+      "hour": "13:00",
       "table": 1,
-      "duration": 3,
+      "duration": 2,
       "ppl": 4,
       "starters": ["water"]
+    },
+    {
+      "id": 2,
+      "date": "2021-06-21",
+      "hour": "14:00",
+      "table": 2,
+      "duration": 3,
+      "ppl": 2,
+      "starters": ["water", "bread"]
     }
   ]
 }
