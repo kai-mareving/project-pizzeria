@@ -75,7 +75,7 @@ class Booking {
   parseData(bookings, eventsCurrent, eventsRepeat) {
     const thisBooking = this;
 
-    /* check if there are pending bookings at given time for chosen table */
+    /* check if there are pending bookings at given time for chosen table -> create object with information to use in makeBooked() */
     thisBooking.booked = {};
 
     for (let item of bookings) {
@@ -89,7 +89,6 @@ class Booking {
     const maxDate = thisBooking.datePicker.maxDate;
 
     for (let item of eventsRepeat) {
-      // const startDate = item.date;
       if (item.repeat == 'daily') {
         for (let loopDate = minDate; loopDate <= maxDate; loopDate = utils.addDays(loopDate,1)) {
           thisBooking.makeBooked(utils.dateToStr(loopDate), item.hour, item.duration, item.table);
