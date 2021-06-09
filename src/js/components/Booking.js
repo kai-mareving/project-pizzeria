@@ -136,8 +136,16 @@ class Booking {
       }
 
       if (!allAvailable &&
-        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)) { table.classList.add(classNames.booking.tableBooked); }
-      else { table.classList.remove(classNames.booking.tableBooked); }
+        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)) {
+        /* add class "booked" */
+        table.classList.add(classNames.booking.tableBooked);
+        /* disable choosing of that table */
+        table.addEventListener('click', false );
+      }
+      else {
+        /* remove class "booked" */
+        table.classList.remove(classNames.booking.tableBooked);
+      }
 
       table.addEventListener('click', function () {
         table.classList.toggle(classNames.booking.tableBooked);
@@ -146,6 +154,18 @@ class Booking {
     }
     thisBooking.selectedTable = 0;
 
+  }
+
+  initTables(table) {
+    const thisBooking = this;
+
+    const date = thisBooking.datePicker.value;
+    const hour = utils.hourToNumber(thisBooking.hourPicker.value);
+
+    if (table.classList.contains('table')) {
+      const tableNumber = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
+      console.log('tableNumber:', tableNumber, table.classList);
+    }
   }
 
   render(container) {
@@ -201,7 +221,7 @@ class Booking {
     //todo
     thisBooking.dom.floorPlan.addEventListener('click', function (event) {
       console.log(event.target);
-      //todo thisBooking.initTables(event.target);
+      thisBooking.initTables(event.target);
     });
 
     thisBooking.dom.buttonBookTable.addEventListener('click', function (event) {
