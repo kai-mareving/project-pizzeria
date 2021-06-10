@@ -139,18 +139,28 @@ class Booking {
         thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)) {
         /* add class "booked" */
         table.classList.add(classNames.booking.tableBooked);
+        table.classList.remove(classNames.booking.tableSelected);
         /* disable choosing of that table */
-        table.addEventListener('click', false );
+        table.removeEventListener('click', function () {
+          table.classList.toggle(classNames.booking.tableBooked);
+        });
       }
       else {
         /* remove class "booked" */
         table.classList.remove(classNames.booking.tableBooked);
       }
 
-      table.addEventListener('click', function () {
-        table.classList.toggle(classNames.booking.tableBooked);
-      });
-
+      /* toggle class selected */
+     /*  table.addEventListener('click', function () {
+        table.classList.toggle(classNames.booking.tableSelected);
+        if (thisBooking.selectedTable == tableId) {
+          thisBooking.selectedTable = 0;
+        } else { thisBooking.selectedTable = tableId; }
+        console.log('selectedTable:',thisBooking.selectedTable);
+      }); */
+     /*  if (table.classList.contains(classNames.booking.tableSelected) && thisBooking.selectedTable == 0 ) {
+        thisBooking.selectedTable = tableId;
+      } else { thisBooking.selectedTable = 0; } */
     }
     thisBooking.selectedTable = 0;
 
@@ -164,8 +174,24 @@ class Booking {
 
     if (table.classList.contains('table')) {
       const tableNumber = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
+      table.classList.toggle('selected');
+
+
+      for (let singleTable of thisBooking.dom.tables) {
+        const tableId = parseInt(singleTable.getAttribute(settings.booking.tableIdAttribute));
+        if (tableId != tableNumber) { singleTable.classList.remove('selected');}
+
+        if (tableNumber == tableId && singleTable.classList.contains('selected')) {
+          thisBooking.selectedTable = tableId;
+        } else if (tableNumber == tableId && !(singleTable.classList.contains('selected'))) {
+          thisBooking.selectedTable = 0;
+        }
+
+      }
       console.log('tableNumber:', tableNumber, table.classList);
+      console.log('selectedTable:', thisBooking.selectedTable);
     }
+
   }
 
   render(container) {
@@ -220,7 +246,7 @@ class Booking {
 
     //todo
     thisBooking.dom.floorPlan.addEventListener('click', function (event) {
-      console.log(event.target);
+      // console.log(event.target);
       thisBooking.initTables(event.target);
     });
 

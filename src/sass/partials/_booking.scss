@@ -159,6 +159,7 @@
 
     &.booked {
       cursor: not-allowed;
+      pointer-events: none;
       color: lighten($color-dark, 40%);
 
       &::after {
@@ -175,8 +176,8 @@
     }
 
     &.selected {
-      cursor: crosshair;
-      color: lighten($color-dark, 40%);
+      cursor: pointer;
+      color: lighten($color-dark, 10%);
 
       &::after {
         position: absolute;
@@ -185,7 +186,7 @@
         height: 100%;
         left: 0;
         top: 0;
-        border: 2px solid darkorchid;
+        background: lighten(crimson, 10%);
         opacity: 0.4;
       }
     }
