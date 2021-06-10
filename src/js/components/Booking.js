@@ -237,15 +237,12 @@ class Booking {
           singleTable.classList.remove(classNames.booking.selected);
         }
 
-        if (tableNumber == tableId && singleTable.classList.contains(classNames.booking.selected)) {
-          thisBooking.selectedTable = tableId;
-        } else if (tableNumber == tableId && !(singleTable.classList.contains(classNames.booking.selected))) {
-          thisBooking.selectedTable = 0;
-        }
+        if (tableNumber == tableId && singleTable.classList.contains(classNames.booking.selected) && !(singleTable.classList.contains(classNames.booking.booked))) { thisBooking.selectedTable = tableId; }
+        else if (tableNumber == tableId && !(singleTable.classList.contains(classNames.booking.selected))) { thisBooking.selectedTable = 0; }
 
       }
-      console.log('tableNumber:', tableNumber, table.classList);
-      console.log('selectedTable:', thisBooking.selectedTable);
+      // console.log('tableNumber:', tableNumber, table.classList);
+      // console.log('selectedTable:', thisBooking.selectedTable);
     }
 
   }
@@ -254,7 +251,6 @@ class Booking {
     const thisBooking = this;
 
   }
-
 
 }
 
