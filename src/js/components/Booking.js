@@ -53,16 +53,12 @@ class Booking {
 
     /* Add event listeners to prepared inputs */
     thisBooking.dom.peopleAmount.addEventListener('update', function () {
-      //// console.log('update on peopleAmount');
     });
     thisBooking.dom.hoursAmount.addEventListener('update', function () {
-      //// console.log('update on hoursAmount');
     });
     thisBooking.dom.datePicker.addEventListener('update', function () {
-      //// console.log('update on datePicker');
     });
     thisBooking.dom.hourPicker.addEventListener('update', function () {
-      //// console.log('update on hourPicker');
     });
 
     thisBooking.dom.wrapper.addEventListener('update', function () {
@@ -101,7 +97,6 @@ class Booking {
         startDateParam,
       ],
     };
-    //// console.log('getData params:', params);
 
     const urls = {
       bookings: settings.db.url + '/' + settings.db.bookings
@@ -111,7 +106,6 @@ class Booking {
       eventsRepeat: settings.db.url + '/' + settings.db.events
         + '?' + params.eventsRepeat.join('&'),
     };
-    //// console.log('getData urls:', urls);
 
     Promise.all([
       fetch(urls.bookings),
@@ -138,7 +132,7 @@ class Booking {
   parseData(bookings, eventsCurrent, eventsRepeat) {
     const thisBooking = this;
 
-    /* check if there are pending bookings at given time for chosen table -> create object with information to use in makeBooked() */
+    /* to check if there are pending bookings at given time for chosen table create object with info to use with makeBooked() */
     thisBooking.booked = {};
 
     for (let item of bookings) {
@@ -159,7 +153,6 @@ class Booking {
         }
       }
     }
-    ////console.log('thisBooking.booked:', thisBooking.booked);
     thisBooking.updateDOM();
   }
 
@@ -247,7 +240,6 @@ class Booking {
 
   sendBooking() {
     const thisBooking = this;
-    console.log('thisBooking.selectedTable:', thisBooking.selectedTable);
 
     const url = settings.db.url + '/' + settings.db.bookings;
     thisBooking.payloadDate = thisBooking.datePicker.value;
@@ -256,6 +248,7 @@ class Booking {
     if (thisBooking.selectedTable == 0) {
       alert('Please choose a table!');
     } else {
+      /* prepare payload object */
       const bookingPayload = {
         date: thisBooking.payloadDate,
         hour: thisBooking.payloadHour,
@@ -278,9 +271,8 @@ class Booking {
           }
         }
       }
-      //> console.log('bookingPayload', bookingPayload);
-      //todo thisBooking.makeBooked(bookingPayload.date, bookingPayload.hour, bookingPayload.duration, bookingPayload.table);
 
+      /* send prepared payload to database + save reservation in thisBooking.bookings */
       const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', },
