@@ -63,7 +63,7 @@ export const select = {
     hoursAmount: '.hours-amount',
     tables: '.floor-plan .table',
     floorPlan: '.floor-plan',
-    starters: '.booking-option-title input[type="checkbox"]',
+    starters: 'input[name="starter"]',
     orderConfirmation: '.order-confirmation',
     phone: '[name="phone"]',
     address: '[name="address"]',

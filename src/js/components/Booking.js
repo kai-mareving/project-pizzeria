@@ -35,7 +35,7 @@ class Booking {
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
     thisBooking.dom.floorPlan = thisBooking.dom.wrapper.querySelector(select.booking.floorPlan);
 
-    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelector(select.booking.starters);
+    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
     thisBooking.dom.orderConfirmation = thisBooking.dom.wrapper.querySelector(select.booking.orderConfirmation);
     thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.booking.phone);
     thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.address);
@@ -257,16 +257,42 @@ class Booking {
       alert('Please choose a table!');
     } else {
       const bookingPayload = {
-        "date": thisBooking.payloadDate,
-        "hour": thisBooking.payloadHour,
-        "table": thisBooking.selectedTable,
-        "duration": thisBooking.hoursAmountWidget.value,
-        "ppl": thisBooking.peopleAmountWidget.value,
-        "starters": [],
-        "phone": thisBooking.dom.phone.value,
-        "address": thisBooking.dom.address.value
+        date: thisBooking.payloadDate,
+        hour: thisBooking.payloadHour,
+        table: thisBooking.selectedTable,
+        duration: thisBooking.hoursAmountWidget.value,
+        ppl: thisBooking.peopleAmountWidget.value,
+        starters: [],
+        phone: thisBooking.dom.phone.value,
+        address: thisBooking.dom.address.value
       };
-      console.log(url, bookingPayload);
+
+      for(let starter of thisBooking.dom.starters){
+        if(starter.checked == true){
+          bookingPayload.starters.push(starter.value);
+        }
+        else if (starter.checked == false) {
+          const index = bookingPayload.starters.indexOf(starter.value);
+          if (index >= 0) {
+            bookingPayload.starters.splice(index, 1);
+          }
+        }
+      }
+      //> console.log('bookingPayload', bookingPayload);
+      //todo thisBooking.makeBooked(bookingPayload.date, bookingPayload.hour, bookingPayload.duration, bookingPayload.table);
+
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify(bookingPayload)
+      };
+
+      fetch(url, options).then(response => response.json())
+        .then(bookingResponse => {
+          console.log('bookingResponse: ', bookingResponse);
+          thisBooking.makeBooked(bookingPayload.date, bookingPayload.hour, bookingPayload.duration, bookingPayload.table);
+        });
+
     }
   }
 
