@@ -246,7 +246,7 @@ class Booking {
     thisBooking.payloadHour = thisBooking.hourPicker.value;
 
     if (thisBooking.selectedTable == 0) {
-      alert('Please choose a table!');
+      alert('Please choose table!');
     } else {
       /* prepare payload object */
       const bookingPayload = {
