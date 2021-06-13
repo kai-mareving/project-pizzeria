@@ -1,5 +1,4 @@
 import { select, classNames, settings } from '../settings.js';
-// import utils from '../utils.js';
 
 class BaseWidget {
   constructor(wrapperElement, initialValue) {
